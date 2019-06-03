@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 
-import rospy
-import crazyflie
-import time
+import math
+import numpy as np
+from crazyflieParser import CrazyflieParser
 
 if __name__ == '__main__':
-    rospy.init_node('takeoff_n_land')
 
-    robot_index = 1   # for cf1
-    cf = crazyflie.Crazyflie(robot_index, [0.0, 0, 0], "")
+    index = 1   # for cf1
+    initialPosition = [0,0,0] # x,y,z coordinate for this crazyflie
+    cfs = CrazyflieParser(index, initialPosition)
+    cf = cfs.crazyflies[0]
+    time = cfs.timeHelper
 
     cf.setParam("commander/enHighLevel", 1)
     cf.setParam("stabilizer/estimator", 2) # Use EKF
