@@ -17,8 +17,14 @@ if __name__ == '__main__':
     cf.setParam("stabilizer/controller", 2) # Use mellinger controller
     #cf.setParam("ring/effect", 7)
 
-    cf.takeoff(targetHeight = 1.0, duration = 3.0)
+    cf.takeoff(targetHeight = 0.5, duration = 3.0)
     time.sleep(3.0)
 
-    cf.land(targetHeight = 0.0, duration = 3.0)
-    time.sleep(3.0)
+    # FILL IN YOUR CODE HERE
+    # Please try both goTo and cmdPosition
+
+
+    
+
+    cf.land(targetHeight = 0.0, duration = 5.0)
+    time.sleep(5.0)
