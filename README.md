@@ -33,6 +33,8 @@ is 1, 2, 3 corresponding to cf1, cf2, cf3, respectively.
 robot name (cf1, cf2, cf3) and corresponding uri channel (90, 100, 110).
 - Modify two parameters in your `waypoint_navigation.py` script:
 robot index (1, 2, 3) and correct initial position ([0, 1.5, 0], [0, 0, 0], or [0, -1.5, 0]).
+- Make sure in your script that the robot goes to the original takeoff point before landing,
+and the duration for landing process is greater than 4 seconds.
 - Put the robot onto the correct/corresponding takeoff point as you specified in the script.
 (Otherwise state estimation will fail and robot will go crazy.)
 - Make sure the robot is heading towards x axis (yaw = 0).
@@ -50,3 +52,27 @@ pose information from mocap by `rostopic echo /optitrack/cf1/pose`
 - After `roslaunch ee245 robot.launch`, it's better to start your script soon.
 This launch file will enable onboard state estimation.
 Kalman Filter may diverge or have large noise if the robot stays stationary for a long time.
+
+## Introduction to the framework
+Please notice the following differences between `cmdPosition` and `goTo` APIs.
+### goTo
+- This is a high level waypoint navigation command that will do onboard planning for you.
+- This command uses 7th-order minimum snap trajectory planning.
+- This command cannot be updated at high frequency and the duration should be greater than 1 second.
+(Otherwise the robot will be unstable and go crazy.)
+- It's recommended to use `relative=True` for `goTo` command for our lab assignments.
+- When switching from high level command to low level command, it works immediately.
+
+### cmdPosition
+- This is a low level command that needs to be continuously updated.
+- This command does not involve any onboard planning.
+You need to do trajectory planning and send desired states to the robot at high frequency.
+- The recommended update frequency for `cmdPosition` is 10Hz.
+- This command can only work with global/world coordinate (no relative movement).
+Make sure the position you send is in the world frame.
+- When switching from low level command to high level command,
+there will be a recovery time of 2 seconds.
+During the recovery time, you will observe that the robot moves randomly
+due to the drift of state estimation.
+- If no more low level or high level command coming in for 2 seconds,
+the robot will fall to the ground.
