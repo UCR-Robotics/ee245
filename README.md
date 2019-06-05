@@ -4,7 +4,7 @@ A repository for all material relevant to EE245 labs.
 ## Installation
 - `sudo apt install git swig libpython-dev python-numpy python-yaml python-matplotlib gcc-arm-none-eabi libpcl-dev libusb-1.0-0-dev sdcc` install dependency
 - `cd ~/catkin_ws/src` please switch to your own ROS workspace
-- `git clone https://github.com/UCR-Robotics/ee245.git` (Or git clone your own "forked" repo)
+- `git clone https://github.com/UCR-Robotics/ee245.git` (or git clone your own "forked" repo)
 - `cd ee245`  go into this folder
 - `./build.sh`   build simulation firmware
 - `cd ../..`  go back to ROS workspace
@@ -33,8 +33,11 @@ is 1, 2, 3 corresponding to cf1, cf2, cf3, respectively.
 robot name (cf1, cf2, cf3) and corresponding uri channel (90, 100, 110).
 - Modify two parameters in your `waypoint_navigation.py` script:
 robot index (1, 2, 3) and correct initial position ([0, 1.5, 0], [0, 0, 0], or [0, -1.5, 0]).
+- Remember to add `time.sleep(n)` right after every command you put in your script,
+and set `n` the same as `duration=n` in your command function.
 - Make sure in your script that the robot goes to the original takeoff point before landing,
 and the duration for landing process is greater than 4 seconds.
+For time being, do not use low level command to land.
 - Put the robot onto the correct/corresponding takeoff point as you specified in the script.
 (Otherwise state estimation will fail and robot will go crazy.)
 - Make sure the robot is heading towards x axis (yaw = 0).
@@ -75,4 +78,4 @@ there will be a recovery time of 2 seconds.
 During the recovery time, you will observe that the robot moves randomly
 due to the drift of state estimation.
 - If no more low level or high level command coming in for 2 seconds,
-the robot will fall to the ground.
+the robot will fall to the ground or drift to some other places.
