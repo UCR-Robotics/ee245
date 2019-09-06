@@ -1,12 +1,16 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="robot" default="cf1"/>
-  <arg name="uri" default="$(eval 'radio://0/100/2M/E7E7E7E70' + arg('robot')[-1] )" /> <!-- less than 10 -->
-  <arg name="frame" default="$(eval '/optitrack/' + arg('robot') + '/pose' )" />
+  <arg name="uri" default="radio://0/100/2M/E7E7E7E701" /> <!-- less than 10 -->
+  <arg name="frame" default="/vicon/cf1/odom" />
 
   <include file="$(find crazyflie_driver)/launch/crazyflie_server.launch"/>
 
-	<include file="$(find ee245)/config/optitrack.xml"/>
+  <include file="$(find vicon)/launch/vicon.launch"/>
+
+  <include file="$(find vicon_odom)/launch/vicon_odom.launch">
+    <arg name="model" value="cf1" />
+  </include>
 
   <group ns="$(arg robot)">
     <include file="$(find crazyflie_driver)/launch/crazyflie_add.launch">
@@ -15,7 +19,7 @@
       <arg name="enable_logging" value="False" />
     </include>
 
-    <node name="pose" pkg="ee245" type="publish_external_position_optitrack.py" output="screen">
+    <node name="pose" pkg="ee245" type="publish_external_position_vicon_odom.py" output="screen">
       <param name="topic" value="$(arg frame)" />
     </node>
   </group>
