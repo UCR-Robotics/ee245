@@ -2,7 +2,7 @@
 <launch>
   <arg name="robot" default="cf1"/>
   <arg name="uri" default="radio://0/100/2M/E7E7E7E701" /> <!-- less than 10 -->
-  <arg name="frame" default="/vicon/cf1/odom" />
+  <arg name="frame" default="/cf1/odom" />
 
   <include file="$(find crazyflie_driver)/launch/crazyflie_server.launch"/>
 
@@ -23,6 +23,6 @@
       <param name="topic" value="$(arg frame)" />
     </node>
   </group>
-  
+
 
 </launch>
