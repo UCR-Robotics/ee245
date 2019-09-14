@@ -13,11 +13,19 @@
   </include>
 
   <group ns="$(arg robot)">
-    <include file="$(find crazyflie_driver)/launch/crazyflie_add.launch">
-      <arg name="uri" value="$(arg uri)" />
-      <arg name="tf_prefix" value="$(arg robot)" />
-      <arg name="enable_logging" value="False" />
-    </include>
+    <node name="crazyflie_add" pkg="crazyflie_driver" type="crazyflie_add" output="screen">
+      <param name="uri" value="$(arg uri)" />
+      <param name="tf_prefix" value="$(arg robot)" />
+      <rosparam>
+        enable_logging: True
+        genericLogTopics: ["motor", "pwm", "thrust"]
+        genericLogTopicFrequencies: [10, 10, 10]     # in ms
+        genericLogTopic_motor_Variables: ["motor.m1", "motor.m2", "motor.m3", "motor.m4"]
+        genericLogTopic_pwm_Variables: ["pwm.m1_pwm", "pwm.m2_pwm", "pwm.m3_pwm", "pwm.m4_pwm"]
+        genericLogTopic_thrust_Variables: ["stabilizer.thrust", "controller.actuatorThrust", "extrx.thrust"]
+        # genericLogTopic_log1_Variables: ["ctrlStat.edist"]
+      </rosparam>
+    </node>
 
     <node name="pose" pkg="ee245" type="publish_external_position_vicon_odom.py" output="screen">
       <param name="topic" value="$(arg frame)" />
